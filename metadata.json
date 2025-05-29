@@ -4,7 +4,7 @@
     "banner": "banner.png",
     "author": "Hazzz895",
     "description": "Добавляет анимированные обложки в полноэкранный режим как на телефонах с упором на кастомизацию",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "type": "script",
     "script": "script.js",
     "css": "style.css"

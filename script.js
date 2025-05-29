@@ -52,7 +52,6 @@ class ReachVideoCover {
             if (!this.settings) {
               this.settings = {};
               this.settings = await this.getSettings();
-              console.log(this.settings);
               if (
                 this.settings.settingsUpdateIntervalEnabled.value &&
                 this.settings.settingsUpdateInterval.value > 0
@@ -113,15 +112,7 @@ class ReachVideoCover {
           break;
         // После того как трек загрузился
         case "audio-canplay":
-          if (this.videoUrl) {
-            this.loadVideo();
-          } else {
-            this.pauseVideo();
-            this.video?.remove();
-            this.video = null;
-            this.fullscreenContent = null;
-            this.fullscreenPoster = null;
-          }
+          this.loadVideo();
           break;
       }
     });
@@ -153,8 +144,11 @@ class ReachVideoCover {
   loadVideo() {
     if (!this.videoUrl) {
       if (this.video) {
+        this.pauseVideo();
         this.video.remove();
         this.video = null;
+        this.fullscreenContent = null;
+        this.fullscreenPoster = null;
       }
       return;
     }
@@ -168,10 +162,7 @@ class ReachVideoCover {
       ".FullscreenPlayerDesktopContent_root__tKNGK"
     );
 
-    if (
-      fullscreenRoot &&
-      this.video?.src != this.videoUrl
-    ) {
+    if (fullscreenRoot && this.video?.src != this.videoUrl) {
       this.fullscreenPoster = fullscreenRoot.querySelector(
         ".FullscreenPlayerDesktopPoster_root__d__YD"
       );
