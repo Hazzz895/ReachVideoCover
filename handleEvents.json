@@ -4,15 +4,23 @@
             "title": "Общее",
             "items": [
                 {
+                    "id": "settingsUpdateIntervalEnabled",
+                    "name": "Включить обновление настроек",
+                    "description": "Включает обновление настроек. Необходим перезапуск для применения",
+                    "type": "button",
+                    "bool": true,
+                    "defaultParameter": false
+                },
+                {
                     "id": "settingsUpdateInterval",
                     "name": "Интервал обновления настроек ‼️НЕОБХОДИМ ПЕРЕЗАПУСК ДЛЯ ПРИМЕНЕНИЯ‼️",
-                    "description": "Интервал в секундах в течение которого будут обновляться настройки. -1 - обновить только один раз.",
+                    "description": "Интервал в секундах в течение которого будут обновляться настройки. Срабатывает только когда включен интервал обновления настроек",
                     "type": "slider",
-                    "min": -1,
+                    "min": 0.1,
                     "max": 30,
-                    "defaultParameter": -1,
+                    "defaultParameter": 5,
                     "step": 0.1,
-                    "value": -1
+                    "value": 5
                 }
             ]
         },
@@ -51,7 +59,7 @@
                     "name": "Видимость фона плеера",
                     "description": "Изменяет видимость кастомного фона плеера, который позволяет улучшить читаемость. Фон применяется не на весь экран, а только на фон элементов",
                     "type": "button",
-                    "bool": true,
+                    "bool": false,
                     "defaultParameter": false
                 },
                 {
@@ -101,7 +109,7 @@
                     "max": 100,
                     "defaultParameter": 100,
                     "step": 1,
-                    "value": 100
+                    "value": 44
                 },
                 {
                     "id": "videoLyricsBrightness",
@@ -112,7 +120,7 @@
                     "max": 100,
                     "defaultParameter": 50,
                     "step": 1,
-                    "value": 50
+                    "value": 28
                 },
                 {
                     "id": "videoBackdrop",
@@ -123,8 +131,8 @@
                         {
                             "id": "videoBackdropValue",
                             "name": "Значения filter. Смотрите https://clck.ru/3MLEsD",
-                            "text": "none",
-                            "defaultParameter": "none"
+                            "text": "",
+                            "defaultParameter": ""
                         }
                     ]
                 }

@@ -37,6 +37,11 @@ class ReachVideoCover {
    */
   settings = null;
 
+  /**
+   * @type {Number}
+   */
+  settingsUpdateInterval = null;
+
   main() {
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
@@ -47,16 +52,16 @@ class ReachVideoCover {
             if (!this.settings) {
               this.settings = {};
               this.settings = await this.getSettings();
-
-              setInterval(
-                async () => {
+              console.log(this.settings);
+              if (
+                this.settings.settingsUpdateIntervalEnabled.value &&
+                this.settings.settingsUpdateInterval.value > 0
+              ) {
+                this.settingsUpdateInterval = setInterval(async () => {
                   this.settings = await this.getSettings();
                   this.applySettings();
-                },
-                this.settings.settingsUpdateInterval.value <= 0
-                  ? Number.MAX_SAFE_INTEGER
-                  : this.settings.settingsUpdateInterval.value * 1000
-              );
+                }, this.settings.settingsUpdateInterval.value * 1000);
+              }
             }
 
             if (
@@ -139,11 +144,20 @@ class ReachVideoCover {
   }
 
   setVideoFilter(brightness) {
-    this.video.style.filter = `brightness(${brightness}%) ` + this.settings.videoBackdrop.videoBackdropValue.value;
+    if (!this.video) return;
+    this.video.style.filter =
+      `brightness(${brightness}%) ` +
+      this.settings.videoBackdrop.videoBackdropValue.value;
   }
 
   loadVideo() {
-    if (!this.videoUrl) return;
+    if (!this.videoUrl) {
+      if (this.video) {
+        this.video.remove();
+        this.video = null;
+      }
+      return;
+    }
 
     const fullscreenModal = document.querySelector(
       '[data-test-id="FULLSCREEN_PLAYER_MODAL"]'
@@ -210,7 +224,7 @@ class ReachVideoCover {
             : this.settings.playerBackgroundColor.value
           ).toString() +
             Math.floor(
-              this.settings.playerBackgroundOpacity.value / 100 * 255
+              (this.settings.playerBackgroundOpacity.value / 100) * 255
             )
               .toString(16)
               .padStart(2, "0")
@@ -351,6 +365,10 @@ class ReachVideoCover {
       this.pauseVideo();
     } else {
       this.playVideo();
+    }
+
+    if (!this.settings.settingsUpdateIntervalEnabled.value) {
+      clearInterval(this.settingsUpdateInterval);
     }
   }
 }
