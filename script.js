@@ -170,7 +170,7 @@ class ReachVideoCover {
 
     if (
       fullscreenRoot &&
-      !document.querySelector(".reachVideoCover_backgroundVideo")
+      this.video?.src != this.videoUrl
     ) {
       this.fullscreenPoster = fullscreenRoot.querySelector(
         ".FullscreenPlayerDesktopPoster_root__d__YD"
