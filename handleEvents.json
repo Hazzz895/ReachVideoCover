@@ -1,0 +1,134 @@
+{
+    "sections": [
+        {
+            "title": "Общее",
+            "items": [
+                {
+                    "id": "settingsUpdateInterval",
+                    "name": "Интервал обновления настроек ‼️НЕОБХОДИМ ПЕРЕЗАПУСК ДЛЯ ПРИМЕНЕНИЯ‼️",
+                    "description": "Интервал в секундах в течение которого будут обновляться настройки. -1 - обновить только один раз.",
+                    "type": "slider",
+                    "min": -1,
+                    "max": 30,
+                    "defaultParameter": -1,
+                    "step": 0.1,
+                    "value": -1
+                }
+            ]
+        },
+        {
+            "title": "Настройки плеера",
+            "items": [
+                {
+                    "id": "playerVisibility",
+                    "name": "Видимость плеера",
+                    "description": "Изменяет видимость плеера (обложки, названия т.д) если доступно фоновое видео. Показывается при наведении на элемент",
+                    "type": "selector",
+                    "selected": 1,
+                    "options": {
+                        "1": {
+                            "event": "none",
+                            "name": "Не скрывать"
+                        },
+                        "2": {
+                            "event": "cover",
+                            "name": "Скрыть только обложку"
+                        },
+                        "3": {
+                            "event": "all",
+                            "name": "Скрыть все (скоро)"
+                        }
+                    },
+                    "defaultParameter": 1
+                }
+            ]
+        },
+        {
+            "title": "Фон плеера",
+            "items": [
+                {
+                    "id": "playerBackgroundEnabled",
+                    "name": "Видимость фона плеера",
+                    "description": "Изменяет видимость кастомного фона плеера, который позволяет улучшить читаемость. Фон применяется не на весь экран, а только на фон элементов",
+                    "type": "button",
+                    "bool": true,
+                    "defaultParameter": false
+                },
+                {
+                    "id": "playerBackgroundOpacity",
+                    "name": "Прозрачность фона плеера",
+                    "description": "Изменяет прозрачность фона плеера",
+                    "type": "slider",
+                    "min": 0,
+                    "max": 100,
+                    "defaultParameter": 25,
+                    "step": 1,
+                    "value": 25
+                },
+                {
+                    "id": "playerBackgroundColor",
+                    "name": "Цвет фона плеера",
+                    "description": "Изменяет цвет фона плеера. Установите #123456 что-бы исплользовать автоматический акцентный цвет RGB(18, 52, 86)",
+                    "type": "color",
+                    "defaultParameter": "#123456",
+                    "input": "#123456"
+                },
+                {
+                    "id": "playerBackgroundBackdrop",
+                    "name": "backdrop-filter фона",
+                    "description": "Устанавливает backdrop-filter фона плеера. Могут быть такие применения: blur, brightness и т.д. Смотрите https://clck.ru/3ML9YC",
+                    "type": "text",
+                    "buttons": [
+                        {
+                            "id": "playerBackgroundBackdropValue",
+                            "name": "Значения backdrop-filter. Смотрите https://clck.ru/3ML9YC",
+                            "text": "none",
+                            "defaultParameter": "none"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "Настройки видео",
+            "items": [
+                {
+                    "id": "videoBrightness",
+                    "name": "Яркость видео",
+                    "description": "Яркость видео во время воспроизведения трека",
+                    "type": "slider",
+                    "min": 0,
+                    "max": 100,
+                    "defaultParameter": 100,
+                    "step": 1,
+                    "value": 100
+                },
+                {
+                    "id": "videoLyricsBrightness",
+                    "name": "Яркость видео при открытом текста",
+                    "description": "Яркость видео когда включен текст",
+                    "type": "slider",
+                    "min": 0,
+                    "max": 100,
+                    "defaultParameter": 50,
+                    "step": 1,
+                    "value": 50
+                },
+                {
+                    "id": "videoBackdrop",
+                    "name": "filter видео",
+                    "description": "Устанавливает filter фонового видео. Могут быть такие применения: blur, brightness и т.д. Смотрите https://clck.ru/3MLEsD",
+                    "type": "text",
+                    "buttons": [
+                        {
+                            "id": "videoBackdropValue",
+                            "name": "Значения filter. Смотрите https://clck.ru/3MLEsD",
+                            "text": "none",
+                            "defaultParameter": "none"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
