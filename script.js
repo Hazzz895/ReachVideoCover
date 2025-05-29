@@ -254,7 +254,7 @@ class ReachVideoCover {
   }
 
   createVideoBackground(url) {
-    if (!video) {
+    if (!this.video) {
       var video = document.createElement("video");
     } else {
       var video = this.video;
