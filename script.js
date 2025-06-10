@@ -156,13 +156,14 @@ class ReachVideoCover {
     const fullscreenModal = document.querySelector(
       '[data-test-id="FULLSCREEN_PLAYER_MODAL"]'
     );
+
     if (!fullscreenModal) return;
 
     const fullscreenRoot = fullscreenModal.querySelector(
       ".FullscreenPlayerDesktopContent_root__tKNGK"
     );
 
-    if (fullscreenRoot && this.video?.src != this.videoUrl) {
+    if (fullscreenRoot && (this.video?.src != this.videoUrl || !fullscreenRoot.querySelector(".reachVideoCover_backgroundVideo"))) {
       this.fullscreenPoster = fullscreenRoot.querySelector(
         ".FullscreenPlayerDesktopPoster_root__d__YD"
       );
