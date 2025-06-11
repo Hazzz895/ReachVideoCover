@@ -322,14 +322,14 @@ class ReachVideoCover {
     video.addEventListener("loadstart", () => {
       document
         .querySelector(".FullscreenPlayerDesktopContent_root__tKNGK")
-        .classList.add("reachVideoCover_background--loading");
+        ?.classList.add("reachVideoCover_background--loading");
     });
 
     video.addEventListener("canplaythrough", () => {
       video.style.opacity = null;
       document
         .querySelector(".FullscreenPlayerDesktopContent_root__tKNGK")
-        .classList.remove("reachVideoCover_background--loading");
+        ?.classList.remove("reachVideoCover_background--loading");
     });
 
     return video;
