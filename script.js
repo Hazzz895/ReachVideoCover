@@ -1,13 +1,25 @@
 class ReachVideoCover {
+  /**
+   * Возвращает URL видео для фона, если оно доступно.
+   * @returns {String|null}
+   */
   get videoUrl() {
     return this.meta?.backgroundVideoUri;
   }
 
+  /**
+   * Возвращает объект с метаданными текущего трека.
+   * @returns {any}
+   */
   get meta() {
     return player?.state?.queueState?.currentEntity?.value?.entity?.entityData
       ?.meta;
   }
 
+  /**
+   * Возвращает статус аудиоплеера. (paused, playing и т.д.)
+   * @returns {String}
+   */
   get status() {
     return window?.player?.state?.currentMediaPlayer?.value?.audioPlayerState
       ?.status?.value;
@@ -18,37 +30,47 @@ class ReachVideoCover {
   }
 
   /**
-   * @type {HTMLVideoElement}
+   * Элемент предоставляющий видео фон.
+   * @type {HTMLVideoElement|null}
    */
   video = null;
 
   /**
-   * @type {HTMLDivElement}
+   * Элемент предоставляющий постер (фотообложку) трека в полноэкранном режиме.
+   * @type {HTMLDivElement|null}
    */
   fullscreenPoster = null;
 
   /**
+   * Элемент предоставляющий содержание полноэкранного режима.
    * @type {HTMLDivElement}
    */
   fullscreenContent = null;
 
   /**
-   * @type {Object}
+   * Объект с настройками.
+   * @type {any}
    */
   settings = null;
 
   /**
+   * Интервал обновления настроек.
    * @type {Number}
    */
   settingsUpdateInterval = null;
 
+  /**
+   * Вызывается при инициализации класса.
+   */
   main() {
+    // Наблюдатель за изменениями в DOM.
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
         if (mutation.type === "childList") {
           mutation.addedNodes.forEach(async (node) => {
             if (!(node instanceof HTMLElement)) return;
 
+            // Если настройки не загружены, загружаем их.
             if (!this.settings) {
               this.settings = {};
               this.settings = await this.getSettings();
@@ -63,11 +85,14 @@ class ReachVideoCover {
               }
             }
 
+            // Если открыт полноэкранный режим, пытаемся загрузить видео.
             if (
               node.querySelector?.('[data-test-id="FULLSCREEN_PLAYER_MODAL"]')
             ) {
               this.loadVideo();
-            } else if (
+            }
+            // Если был открыт дополнительный контент (очередь, текст трека и т.д.), устанавливаем затемнение видео из настроек.
+            else if (
               node.matches?.(
                 ".FullscreenPlayerDesktopContent_additionalContent__tuuy7"
               ) ||
@@ -78,6 +103,8 @@ class ReachVideoCover {
               this.setVideoFilter(this.settings.videoLyricsBrightness.value);
             }
           });
+
+          // Если был закрыт дополнительный контент, устанавливаем затемнение видео по умолчанию.
           mutation.removedNodes.forEach((node) => {
             if (!(node instanceof HTMLElement)) return;
 
@@ -118,6 +145,9 @@ class ReachVideoCover {
     });
   }
 
+  /**
+   * Останавливает видео фон
+   */
   pauseVideo() {
     if (this.video) {
       this.video.classList.add("reachVideoCover_backgroundVideo--paused");
@@ -141,6 +171,10 @@ class ReachVideoCover {
       this.settings.videoBackdrop.videoBackdropValue.value;
   }
 
+  /**
+   * Создает и загружает видео фон, если он доступен.
+   * @returns {void}
+   */
   loadVideo() {
     if (!this.videoUrl) {
       if (this.video) {
@@ -163,7 +197,7 @@ class ReachVideoCover {
       ".FullscreenPlayerDesktopContent_root__tKNGK"
     );
 
-    if (fullscreenRoot && (this.video?.src != this.videoUrl || !fullscreenRoot.querySelector(".reachVideoCover_backgroundVideo"))) {
+    if (fullscreenRoot && this.video?.src != this.videoUrl || !fullscreenRoot.querySelector(".reachVideoCover_backgroundVideo")) {
       this.fullscreenPoster = fullscreenRoot.querySelector(
         ".FullscreenPlayerDesktopPoster_root__d__YD"
       );
@@ -181,6 +215,9 @@ class ReachVideoCover {
     }
   }
 
+  /**
+   * Возобновляет видео фон.
+   */
   playVideo() {
     if (this.video) {
       this.video.classList.remove("reachVideoCover_backgroundVideo--paused");
@@ -231,6 +268,11 @@ class ReachVideoCover {
     }
   }
 
+  /**
+   * Преобразует hex в rgba
+   * @param {string} hex Цвет в формате hex
+   * @returns {string} Цвет в формате rgba
+   */
   hexToRgba(hex) {
     hex = hex.replace(/^#/, "");
 
@@ -254,6 +296,11 @@ class ReachVideoCover {
     return `rgba(${r}, ${g}, ${b}, ${a})`;
   }
 
+  /**
+   * Создает и возращает элемент видео фона.
+   * @param {string} url Ссылка на видео.
+   * @returns {HTMLVideoElement} Элемент предоставляющий видео фон.
+   */
   createVideoBackground(url) {
     if (!this.video) {
       var video = document.createElement("video");
@@ -288,6 +335,12 @@ class ReachVideoCover {
     return video;
   }
 
+  /**
+   * Получает CSS класс по его имени.
+   * @unused Больше не используется, когда-нибудь понадобится. 🥸
+   * @param {string} name Имя класса CSS, который нужно найти. 
+   * @returns {any} CSS класс
+   */
   getClass(name) {
     for (let sheet of document.styleSheets) {
       for (let rule of sheet.cssRules) {
@@ -298,6 +351,10 @@ class ReachVideoCover {
     }
   }
 
+  /**
+   * Получает настройки из API.
+   * @returns {Promise<any>}
+   */
   async getSettings() {
     try {
       const response = await fetch(
@@ -318,6 +375,11 @@ class ReachVideoCover {
     }
   }
 
+  /**
+   * Преобразует JSON данные в объект с настройками.
+   * @param {any} data JSON данные с настройками.
+   * @returns {any} Объект с настройками.
+   */
   transformJSON(data) {
     const result = {};
 
@@ -350,6 +412,10 @@ class ReachVideoCover {
     }
   }
 
+  /**
+   * Применяет настройки к видео фону и полноэкранному режиму.
+   * @returns {void}
+   */
   applySettings() {
     if (!this.settings) return;
 
