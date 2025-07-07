@@ -1,4 +1,26 @@
 class ReachVideoCover {
+    /**
+   * Определяет, является ли текущая версия приложения больше или равной 5.58.0.
+   *
+   * Геттер парсит глобальную строку `window.VERSION` (ожидается формат "x.y.z"),
+   * объединяет её числовые части и сравнивает полученное число с `5580`.
+   *
+   * @returns `true`, если текущая версия не ниже 5.58.0, иначе `false`.
+   */
+  get IS_NEW_VERSION() {
+    const splitedVersion = window.VERSION.split(".");
+    var version = "";
+    splitedVersion.forEach((element) => {
+      version += element;
+    });
+    return parseInt(version) >= 5580;
+  }
+  
+  get player() {
+    if (this.IS_NEW_VERSION) return window.sonataState;
+    else return window.player;
+  }
+
   /**
    * Возвращает URL видео для фона, если оно доступно.
    * @returns {String|null}
@@ -12,8 +34,8 @@ class ReachVideoCover {
    * @returns {any}
    */
   get meta() {
-    return player?.state?.queueState?.currentEntity?.value?.entity?.entityData
-      ?.meta;
+    return this.player.state?.queueState?.currentEntity?.value?.entity
+      ?.entityData?.meta;
   }
 
   /**
@@ -21,7 +43,7 @@ class ReachVideoCover {
    * @returns {String}
    */
   get status() {
-    return window?.player?.state?.currentMediaPlayer?.value?.audioPlayerState
+    return this.player?.state?.currentMediaPlayer?.value?.audioPlayerState
       ?.status?.value;
   }
 
@@ -125,20 +147,24 @@ class ReachVideoCover {
       subtree: true,
     });
 
-    window?.player?.state?.playerState?.event.onChange(async (event) => {
+    this.player?.state?.playerState?.event.onChange(async (event) => {
       switch (event) {
         // Если трек поставлен на паузу
         case "audio-paused":
         case "audio-ended":
         case "audio-end":
+        case "Paused":
+        case "Ended":
           this.pauseVideo();
           break;
         // Если трек был убран с паузы
         case "audio-resumed":
+        case "Resumed":
           this.playVideo();
           break;
         // После того как трек загрузился
         case "audio-canplay":
+        case "CanPlay":
           this.loadVideo();
           break;
       }
