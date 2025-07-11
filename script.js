@@ -15,6 +15,15 @@ class ReachVideoCover {
     });
     return parseInt(version) >= 5580;
   }
+
+  get audioPlayerState(){
+    if (this.IS_NEW_VERSION) return window.sonataState?.state?.currentMediaPlayer?.value?.state;
+    else return window.player?.state?.currentMediaPlayer?.value?.audioPlayerState;
+  }
+
+  get playerState() {
+    return this.player?.state?.playerState;
+  }
   
   get player() {
     if (this.IS_NEW_VERSION) return window.sonataState;
@@ -43,8 +52,7 @@ class ReachVideoCover {
    * @returns {String}
    */
   get status() {
-    return this.player?.state?.currentMediaPlayer?.value?.audioPlayerState
-      ?.status?.value;
+    return this.audioPlayerState?.status?.value;
   }
 
   constructor() {
@@ -147,7 +155,16 @@ class ReachVideoCover {
       subtree: true,
     });
 
-    this.player?.state?.playerState?.event.onChange(async (event) => {
+    this.waitForPlayerStateEvent()
+  }
+
+  waitForPlayerStateEvent() {
+    while (!this.playerState?.event) {
+      setTimeout(() => this.waitForPlayerStateEvent(), 500);
+      return;
+    }
+
+    this.playerState.event.onChange(async (event) => {
       switch (event) {
         // Если трек поставлен на паузу
         case "audio-paused":
@@ -164,7 +181,7 @@ class ReachVideoCover {
           break;
         // После того как трек загрузился
         case "audio-canplay":
-        case "CanPlay":
+        case "Playing":
           this.loadVideo();
           break;
       }
