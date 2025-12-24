@@ -1,33 +1,11 @@
 class ReachVideoCover {
-    /**
-   * Определяет, является ли текущая версия приложения больше или равной 5.58.0.
-   *
-   * Геттер парсит глобальную строку `window.VERSION` (ожидается формат "x.y.z"),
-   * объединяет её числовые части и сравнивает полученное число с `5580`.
-   *
-   * @returns `true`, если текущая версия не ниже 5.58.0, иначе `false`.
-   */
-  get IS_NEW_VERSION() {
-    const splitedVersion = window.VERSION.split(".");
-    var version = "";
-    splitedVersion.forEach((element) => {
-      version += element;
-    });
-    return parseInt(version) >= 5580;
-  }
 
   get audioPlayerState(){
-    if (this.IS_NEW_VERSION) return window.sonataState?.state?.currentMediaPlayer?.value?.state;
-    else return window.player?.state?.currentMediaPlayer?.value?.audioPlayerState;
+    return this.player?.playerState;
   }
 
-  get playerState() {
-    return this.player?.state?.playerState;
-  }
-  
   get player() {
-    if (this.IS_NEW_VERSION) return window.sonataState;
-    else return window.player;
+    return window.sonataState;
   }
 
   /**
@@ -43,8 +21,7 @@ class ReachVideoCover {
    * @returns {any}
    */
   get meta() {
-    return this.player.state?.queueState?.currentEntity?.value?.entity
-      ?.entityData?.meta;
+    return this.player?.queueState?.currentEntity?.value?.entity?.entityData?.meta;
   }
 
   /**
@@ -159,12 +136,11 @@ class ReachVideoCover {
   }
 
   waitForPlayerStateEvent() {
-    while (!this.playerState?.event) {
+    while (!this.audioPlayerState?.event) {
       setTimeout(() => this.waitForPlayerStateEvent(), 500);
       return;
     }
-
-    this.playerState.event.onChange(async (event) => {
+    this.audioPlayerState.event.onChange(async (event) => {
       switch (event) {
         // Если трек поставлен на паузу
         case "audio-paused":

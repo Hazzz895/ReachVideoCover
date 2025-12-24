@@ -59,7 +59,7 @@
                     "name": "Видимость фона плеера",
                     "description": "Изменяет видимость кастомного фона плеера, который позволяет улучшить читаемость. Фон применяется не на весь экран, а только на фон элементов",
                     "type": "button",
-                    "bool": false,
+                    "bool": true,
                     "defaultParameter": false
                 },
                 {
@@ -71,7 +71,7 @@
                     "max": 100,
                     "defaultParameter": 25,
                     "step": 1,
-                    "value": 25
+                    "value": 1
                 },
                 {
                     "id": "playerBackgroundColor",
@@ -90,7 +90,7 @@
                         {
                             "id": "playerBackgroundBackdropValue",
                             "name": "Значения backdrop-filter. Смотрите https://clck.ru/3ML9YC",
-                            "text": "none",
+                            "text": "",
                             "defaultParameter": "none"
                         }
                     ]
@@ -109,7 +109,7 @@
                     "max": 100,
                     "defaultParameter": 100,
                     "step": 1,
-                    "value": 44
+                    "value": 89
                 },
                 {
                     "id": "videoLyricsBrightness",
@@ -120,7 +120,7 @@
                     "max": 100,
                     "defaultParameter": 50,
                     "step": 1,
-                    "value": 28
+                    "value": 50
                 },
                 {
                     "id": "videoBackdrop",
