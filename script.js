@@ -1,11 +1,7 @@
 class ReachVideoCover {
 
   get audioPlayerState(){
-    return this.player?.playerState;
-  }
-
-  get player() {
-    return window.sonataState;
+    return window.pulsesyncApi.getState().playerState;
   }
 
   /**
@@ -21,7 +17,7 @@ class ReachVideoCover {
    * @returns {any}
    */
   get meta() {
-    return this.player?.queueState?.currentEntity?.value?.entity?.entityData?.meta;
+    return pulsesyncApi.getCurrentTrack();
   }
 
   /**
@@ -78,19 +74,12 @@ class ReachVideoCover {
             if (!(node instanceof HTMLElement)) return;
 
             // Если настройки не загружены, загружаем их.
-            if (!this.settings) {
-              this.settings = {};
-              this.settings = await this.getSettings();
-              if (
-                this.settings.settingsUpdateIntervalEnabled.value &&
-                this.settings.settingsUpdateInterval.value > 0
-              ) {
-                this.settingsUpdateInterval = setInterval(async () => {
-                  this.settings = await this.getSettings();
-                  this.applySettings();
-                }, this.settings.settingsUpdateInterval.value * 1000);
-              }
-            }
+            const ADDON_SETTINGS = window.pulsesyncApi.getSettings("ReachVideoCover")
+            this.settings = ADDON_SETTINGS.getCurrent()
+            this.settings.onChange(s => {
+              this.settings = s;
+              this.applySettings();
+            })
 
             // Если открыт полноэкранный режим, пытаемся загрузить видео.
             if (
@@ -132,36 +121,30 @@ class ReachVideoCover {
       subtree: true,
     });
 
-    this.waitForPlayerStateEvent()
-  }
-
-  waitForPlayerStateEvent() {
-    while (!this.audioPlayerState?.event) {
-      setTimeout(() => this.waitForPlayerStateEvent(), 500);
-      return;
-    }
-    this.audioPlayerState.event.onChange(async (event) => {
-      switch (event) {
-        // Если трек поставлен на паузу
-        case "audio-paused":
-        case "audio-ended":
-        case "audio-end":
-        case "Paused":
-        case "Ended":
-          this.pauseVideo();
-          break;
-        // Если трек был убран с паузы
-        case "audio-resumed":
-        case "Resumed":
-          this.playVideo();
-          break;
-        // После того как трек загрузился
-        case "audio-canplay":
-        case "Playing":
-          this.loadVideo();
-          break;
-      }
+    window.pulsesyncApi._waitForPlayer((_) => {
+      this.audioPlayerState.event.onChange(async (event) => {
+        switch (event) {
+          // Если трек поставлен на паузу
+          case "audio-paused":
+          case "audio-ended":
+          case "audio-end":
+          case "Paused":
+          case "Ended":
+            this.pauseVideo();
+            break;
+          // Если трек был убран с паузы
+          case "audio-resumed":
+          case "Resumed":
+            this.playVideo();
+            break;
+          // После того как трек загрузился
+          case "audio-canplay":
+          case "Playing":
+            this.loadVideo();
+            break;
+        }
     });
+  });
   }
 
   /**
@@ -442,10 +425,6 @@ class ReachVideoCover {
       this.pauseVideo();
     } else {
       this.playVideo();
-    }
-
-    if (!this.settings.settingsUpdateIntervalEnabled.value) {
-      clearInterval(this.settingsUpdateInterval);
     }
   }
 }
