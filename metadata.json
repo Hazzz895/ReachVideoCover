@@ -1,18 +1,23 @@
 {
-    "name": "ReachVideoCover",
-    "image": "image.png",
-    "banner": "banner.png",
-    "author": "Hazzz895",
-    "description": "Добавляет анимированные обложки в полноэкранный режим как на телефонах с упором на кастомизацию",
-    "version": "1.3.0",
-    "type": "script",
-    "script": "script.js",
-    "css": "style.css",
-    "tags": [
-        "Customization",
-        "Script",
-        "Player"
-    ],
-    "installSource": "local",
-    "id": "491c94cc5b06a7c3b6a230b7"
+  "name": "ReachVideoCover",
+  "image": "image.png",
+  "banner": "banner.png",
+  "libraryLogo": "",
+  "author": "Hazzz895",
+  "description": "Добавляет анимированные обложки в полноэкранный режим как на телефонах с упором на кастомизацию",
+  "version": "1.3.1",
+  "css": "style.css",
+  "script": "script.js",
+  "type": "script",
+  "tags": [
+    "Customization",
+    "Script",
+    "Player"
+  ],
+  "dependencies": [],
+  "allowedUrls": [],
+  "supportedVersions": [],
+  "installSource": "local",
+  "id": "491c94cc5b06a7c3b6a230b7",
+  "storeAddonId": "a285f3dd-7df5-4efa-88f2-53aec6f336d7"
 }

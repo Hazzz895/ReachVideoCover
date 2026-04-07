@@ -73,14 +73,6 @@ class ReachVideoCover {
           mutation.addedNodes.forEach(async (node) => {
             if (!(node instanceof HTMLElement)) return;
 
-            // Если настройки не загружены, загружаем их.
-            const ADDON_SETTINGS = window.pulsesyncApi.getSettings("ReachVideoCover")
-            this.settings = ADDON_SETTINGS.getCurrent()
-            this.settings.onChange(s => {
-              this.settings = s;
-              this.applySettings();
-            })
-
             // Если открыт полноэкранный режим, пытаемся загрузить видео.
             if (
               node.querySelector?.('[data-test-id="FULLSCREEN_PLAYER_MODAL"]')
@@ -122,6 +114,12 @@ class ReachVideoCover {
     });
 
     window.pulsesyncApi._waitForPlayer((_) => {
+      const ADDON_SETTINGS = window.pulsesyncApi.getSettings("ReachVideoCover")
+      this.settings = ADDON_SETTINGS.getCurrent()
+      ADDON_SETTINGS.onChange(s => {
+        this.settings = s;
+        this.applySettings();
+      })
       this.audioPlayerState.event.onChange(async (event) => {
         switch (event) {
           // Если трек поставлен на паузу
