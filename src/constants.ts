@@ -1,0 +1,1 @@
+export const FULLSCREEN_CONTENT_ROOT = '[data-test-id="FULLSCREEN_PLAYER_MODAL"] .FullscreenPlayerDesktopContent_root__tKNGK'
