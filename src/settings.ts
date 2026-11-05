@@ -14,7 +14,7 @@ export const settings = defineAddonSettings([
                     { label: 'Скрывать только обложку трека', value: 'cover' },
                     { label: 'Скрывать всё, кроме текста', value: 'all' },
                 ]
-            }
+            },
         }
     },
     {
@@ -34,43 +34,10 @@ export const settings = defineAddonSettings([
                 min: 0,
                 max: 100,
             },
-            videoBackdrop: {
+            videoFilter: {
                 type: SettingType.STRING,
-                name: 'Backdrop фильтр видеообложки (продвинуто)',
+                name: 'Фильтр видеообложки (продвинуто)',
                 default: ''
-            }
-        }
-    },
-    {
-        title: 'Настройки фона плеера',
-        items: {
-            playerBackgroundEnabled: {
-                name: 'Добавить фон на плеер',
-                description: 'Когда включено, к элементам плеера (обложке, названию и т.д) добавляется фон для улучшения читаемости.',
-                type: SettingType.BOOLEAN,
-                default: false
-            },
-            playerBackgroundOpacity: {
-                name: 'Прозрачность фона',
-                type: SettingType.NUMBER,
-                default: 25,
-                min: 0,
-                max: 100,
-            },
-            playerBackgroundColorFromCover: {
-                name: 'Использовать акцентный цвет обложки трека как цвет фона',
-                type: SettingType.BOOLEAN,
-                default: true,
-            },
-            playerBackgroundColor: {
-                name: 'Цвет фона (используется если кнопка выше выключена)',
-                type: SettingType.COLOR,
-                default: '#000000',
-            },
-            playerBackgroundBackdrop: {
-                name: 'Backdrop фильтр фона (продвинуто)',
-                type: SettingType.STRING,
-                default: 'blur(4px)'
             }
         }
     },

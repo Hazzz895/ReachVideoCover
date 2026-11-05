@@ -1,3 +1,18 @@
+@property --video-brightness {
+    syntax: '<number>';
+    initial-value: 100;
+}
+
+@property --video-lyrics-brightness {
+    syntax: '<number>';
+    initial-value: 50;
+}
+
+@property --video-filter {
+    syntax: '<string>';
+    initial-value: '';
+}
+
 .VideoCover {
     transition: opacity 0.5s ease-in-out, filter 1s ease-in-out;
       position: absolute;
