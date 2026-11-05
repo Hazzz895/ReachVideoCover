@@ -7,5 +7,9 @@ declare const classNames: {
   readonly VideoCover_hiddenPoster: "VideoCover_hiddenPoster";
   readonly VideoCover_paused: "VideoCover_paused";
   readonly VideoCover_hidden: "VideoCover_hidden";
+  readonly SyncLyrics_content__lbkWP: "SyncLyrics_content__lbkWP";
+  readonly FullscreenPlayerDesktopPoster_root__d__YD: "FullscreenPlayerDesktopPoster_root__d__YD";
+  readonly FullscreenPlayerDesktopContent_fullscreenContent__Nvety: "FullscreenPlayerDesktopContent_fullscreenContent__Nvety";
+  readonly PlayQueue_content__zIUvd: "PlayQueue_content__zIUvd";
 };
 export = classNames;

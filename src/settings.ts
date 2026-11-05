@@ -6,7 +6,7 @@ export const settings = defineAddonSettings([
         items: {
             playerVisibility: {
                 name: 'Видимость плеера на треках с видеообложками',
-                description: 'Изменяет видимость плеера (обложки, названия и т.д) если доступна видеобложка.',
+                description: 'Изменяет видимость плеера (обложки, названия и т.д) если доступна видеообложка.',
                 type: SettingType.SELECT,
                 default: 'cover',
                 options: [
@@ -20,15 +20,15 @@ export const settings = defineAddonSettings([
     {
         title: 'Настройки видеообложки',
         items: {
-            videoBrightness: {
-                name: 'Яркость видеообложки',
+            videoOpacity: {
+                name: 'Прозрачность видеообложки',
                 type: SettingType.NUMBER,
                 default: 100,
                 min: 0,
                 max: 100,
             },
-            videoLyricsBrightness: {
-                name: 'Яркость видео при открытом тексте',
+            videoLyricsOpacity: {
+                name: 'Прозрачность видеообложки при открытом тексте',
                 type: SettingType.NUMBER,
                 default: 50,
                 min: 0,

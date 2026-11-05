@@ -1,24 +1,13 @@
-@property --video-brightness {
-    syntax: '<number>';
+@property --video-opacity {
+    syntax: "<number>";
     inherits: false;
     initial-value: 100;
 }
 
-@property --video-lyrics-brightness {
+@property --video-lyrics-opacity {
     syntax: '<number>';
     inherits: false;
     initial-value: 50;
-}
-
-@property --video-filter {
-    syntax: '<string>';
-    inherits: false;
-    initial-value: '';
-}
-
-
-@function --percentage(--value: 100) {
-  result: calc(var(--value) * 1%);
 }
 
 .VideoCover {
@@ -30,8 +19,8 @@
   height: 100%;
   object-fit: cover;
   z-index: -1;
-
-  filter: brightness(--percentage(var(--video-brightness, 100))) var(--video-filter, );
+  opacity: calc(var(--video-opacity, 100) / 100);
+  filter: var(--video-filter, none)
 }
 
 :global([data-test-id="FULLSCREEN_PLAYER_MODAL"] .FullscreenPlayerDesktopContent_root__tKNGK) {
@@ -40,10 +29,10 @@
     }
 
     &:has(:global(.FullscreenPlayerDesktopContent_additionalContent__tuuy7):not(:global(.FullscreenPlayerDesktopContent_additionalContent_exit__aM4Or))) .VideoCover {
-        --video-brightness: var(--video-lyrics-brightness, 50) !important;
+        --video-opacity: var(--video-lyrics-opacity, 50) !important;
     }
 
-    &:has(.VideoCover_hiddenPoster:not(.VideoCover_paused)) [data-test-id="FULLSCREEN_PLAYER_POSTER_CONTENT"], &:has(.VideoCover_hidden:not(.VideoCover_paused)) [data-test-id="FULLSCREEN_PLAYER_FULLSCREEN_CONTENT"] {
+    &:has(.VideoCover_hiddenPoster:not(.VideoCover_paused):not(.VideoCover_loading)) [data-test-id="FULLSCREEN_PLAYER_POSTER_CONTENT"], &:has(.VideoCover_hidden:not(.VideoCover_paused):not(.VideoCover_loading)) [data-test-id="FULLSCREEN_PLAYER_FULLSCREEN_CONTENT"] {
         opacity: 0;
 
         &:hover {
@@ -66,4 +55,26 @@
   0% { filter: brightness(100%); }
   50% { filter: brightness(80%); }
   100% { filter: brightness(100%); }
+}
+
+:global(.SyncLyrics_content__lbkWP):before, :global(.SyncLyrics_content__lbkWP):after {
+    display: none;
+}
+
+:global(.FullscreenPlayerDesktopPoster_root__d__YD) {
+    transition: opacity 0.5s ease-in-out;
+}
+
+:global(.FullscreenPlayerDesktopContent_fullscreenContent__Nvety) {
+    transition: background-color 0.5s ease-in-out, backdrop-filter 0.5s ease-in-out;
+}
+
+:global(.SyncLyrics_content__lbkWP), :global(.PlayQueue_content__zIUvd) {
+    mask-image: linear-gradient(
+        to bottom,
+        transparent 0,
+        black 5rem,
+        black calc(100% - 5rem),
+        transparent 100%
+    );
 }
