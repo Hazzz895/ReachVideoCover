@@ -33,6 +33,13 @@ export default function VideoCover() {
         }
     }, [playerSnapshot?.isPlaying])
 
+    useEffect(() => {
+        const video = useVideoElement();
+        
+        video?.classList.toggle(classNames.VideoCover_hiddenPoster, settings.playerVisibility === 'cover');
+        video?.classList.toggle(classNames.VideoCover_hidden, settings.playerVisibility === 'all');
+    }, [settings.playerVisibility])
+
     function onLoadStart() {
         useVideoElement()?.classList.add(classNames.VideoCover_loading)
     }
