@@ -2,7 +2,7 @@ const addonConfig = {
     id: '491c94cc5b06a7c3b6a230b7',
     directoryName: '491c94cc5b06a7c3b6a230b7',
     name: 'ReachVideoCover',
-    description: 'Добавляет анимированные обложки в полноэкранный режим как на телефонах с упором на кастомизацию',
+    description: 'Добавляет видеообложки на фон полноэкранного режима, как на телефонах',
     version: '2.0.0',
     author: 'Hazzz895',
     image: 'image.png',
