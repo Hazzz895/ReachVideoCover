@@ -20,7 +20,7 @@ export default function VideoCover() {
         if (!video) return;
 
         if (isPlaying) {
-            video.play()
+            video.play().catch(() => {})
         } else {
             video.pause();
         }
