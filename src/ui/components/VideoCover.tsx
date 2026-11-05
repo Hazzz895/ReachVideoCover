@@ -7,58 +7,50 @@ import { settingsToCssVars } from "@/utils/ui-utils";
 
 export default function VideoCover() {
     const currentTrack: Nullable<TrackMeta> = useCurrentTrack();
-    const useCurrentVideoSrc = () => currentTrack?.backgroundVideoUri ?? null;
     const playerSnapshot = usePlayer();
-    const [videoSrc, setVideoSrc] = useState<Nullable<string>>(useCurrentVideoSrc());
-    const videoElement = useRef<Nullable<HTMLVideoElement>>(null);
-    const useVideoElement = () => videoElement.current;
-    const settings = addonSettings.use()
+    const settings = addonSettings.use();
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [loading, setLoading] = useState(false);
+
+    const videoSrc = currentTrack?.backgroundVideoUri ?? null;
+    const isPlaying = !!playerSnapshot?.isPlaying;
 
     useEffect(() => {
-        setVideoSrc(useCurrentVideoSrc())
-    }, [currentTrack?.backgroundVideoUri])
-
-    useEffect(() => {
-        const video = useVideoElement();
-
+        const video = videoRef.current;
         if (!video) return;
 
-        if (playerSnapshot?.isPlaying) {
-            video.play();
-            video.classList.remove(classNames.VideoCover_paused)
-        }
-        else {
+        if (isPlaying) {
+            video.play()
+        } else {
             video.pause();
-            video.classList.add(classNames.VideoCover_paused)
         }
-    }, [playerSnapshot?.isPlaying])
+    }, [isPlaying, videoSrc]);
 
-    useEffect(() => {
-        const video = useVideoElement();
-        
-        video?.classList.toggle(classNames.VideoCover_hiddenPoster, settings.playerVisibility === 'cover');
-        video?.classList.toggle(classNames.VideoCover_hidden, settings.playerVisibility === 'all');
-    }, [settings.playerVisibility])
+    const classes = [
+        classNames.VideoCover,
+        loading && classNames.VideoCover_loading,
+        !isPlaying && classNames.VideoCover_paused,
+        settings.playerVisibility === 'cover' && classNames.VideoCover_hiddenPoster,
+        settings.playerVisibility === 'all' && classNames.VideoCover_hidden,
+    ].filter(Boolean).join(' ');
 
-    function onLoadStart() {
-        useVideoElement()?.classList.add(classNames.VideoCover_loading)
-    }
+    if (!videoSrc) return null;
 
-    function onCanPlay() {
-        useVideoElement()?.classList.remove(classNames.VideoCover_loading)
-    }
-
-    const style = settingsToCssVars(settings)
-
-    return <>
-        {videoSrc &&
-            <video
-                className={classNames.VideoCover}
-                ref={videoElement}
-                src={videoSrc}
-                onLoadStart={onLoadStart}
-                onCanPlayThrough={onCanPlay}
-                style={style}
-            />}
-    </>
+    return (
+        <video
+            key={videoSrc}
+            ref={videoRef}
+            className={classes}
+            src={videoSrc}
+            style={settingsToCssVars(settings)}
+            muted
+            loop
+            playsInline
+            preload="auto"
+            onLoadStart={() => setLoading(true)}
+            onCanPlay={() => setLoading(false)}
+            onLoadedData={() => setLoading(false)}
+            onError={() => setLoading(false)}
+        />
+    );
 }
