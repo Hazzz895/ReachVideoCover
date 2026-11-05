@@ -1,15 +1,18 @@
 @property --video-brightness {
     syntax: '<number>';
+    inherits: false;
     initial-value: 100;
 }
 
 @property --video-lyrics-brightness {
     syntax: '<number>';
+    inherits: false;
     initial-value: 50;
 }
 
 @property --video-filter {
     syntax: '<string>';
+    inherits: false;
     initial-value: '';
 }
 
