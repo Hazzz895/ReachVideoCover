@@ -2,6 +2,8 @@ import classNames from "@/styles.module.scss";
 import { Nullable, TrackMeta } from "@/types";
 import { useCurrentTrack, usePlayer } from "@pulsesync/addon-sdk";
 import { useEffect, useRef, useState } from "react";
+import { settings as addonSettings } from "@/settings";
+import { settingsToCssVars } from "@/utils/ui-utils";
 
 export default function VideoCover() {
     const currentTrack: Nullable<TrackMeta> = useCurrentTrack();
@@ -10,6 +12,7 @@ export default function VideoCover() {
     const [videoSrc, setVideoSrc] = useState<Nullable<string>>(useCurrentVideoSrc());
     const videoElement = useRef<Nullable<HTMLVideoElement>>(null);
     const useVideoElement = () => videoElement.current;
+    const settings = addonSettings.use()
 
     useEffect(() => {
         setVideoSrc(useCurrentVideoSrc())
@@ -38,7 +41,17 @@ export default function VideoCover() {
         useVideoElement()?.classList.remove(classNames.VideoCover_loading)
     }
 
+    const style = settingsToCssVars(settings)
+
     return <>
-        {videoSrc && <video className={classNames.VideoCover} ref={videoElement} src={videoSrc} onLoadStart={onLoadStart} onCanPlayThrough={onCanPlay}/>}
+        {videoSrc &&
+            <video
+                className={classNames.VideoCover}
+                ref={videoElement}
+                src={videoSrc}
+                onLoadStart={onLoadStart}
+                onCanPlayThrough={onCanPlay}
+                style={style}
+            />}
     </>
 }
